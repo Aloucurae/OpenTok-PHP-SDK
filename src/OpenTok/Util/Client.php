@@ -24,6 +24,7 @@ use OpenTok\Exception\ArchiveDomainException;
 use OpenTok\Exception\AuthenticationException;
 use OpenTok\Exception\BroadcastDomainException;
 use OpenTok\Exception\UnexpectedValueException;
+use OpenTok\Exception\InvalidArgumentException;
 use OpenTok\Exception\SignalConnectionException;
 use OpenTok\Exception\SignalAuthenticationException;
 use OpenTok\Exception\ArchiveAuthenticationException;
@@ -899,7 +900,7 @@ class Client
             } else {
                 throw new DomainException(
                     'The OpenTok API request failed: ' . json_decode($e->getResponse()->getBody(true))->message,
-                    null,
+                    0,
                     $e
                 );
             }
@@ -907,11 +908,10 @@ class Client
             // will catch all 5xx errors
             throw new UnexpectedValueException(
                 'The OpenTok API server responded with an error: ' . json_decode($e->getResponse()->getBody(true))->message,
-                null,
+                0,
                 $e
             );
         } else {
-            // TODO: check if this works because Exception is an interface not a class
             throw new \Exception('An unexpected error occurred');
         }
     }
@@ -923,9 +923,9 @@ class Client
         } catch (AuthenticationException $ae) {
             throw new ArchiveAuthenticationException($this->apiKey, $this->apiSecret, null, $ae->getPrevious());
         } catch (DomainException $de) {
-            throw new ArchiveDomainException($e->getMessage(), null, $de->getPrevious());
+            throw new ArchiveDomainException($e->getMessage(), 0, $de->getPrevious());
         } catch (UnexpectedValueException $uve) {
-            throw new ArchiveUnexpectedValueException($e->getMessage(), null, $uve->getPrevious());
+            throw new ArchiveUnexpectedValueException($e->getMessage(), 0, $uve->getPrevious());
         } catch (Exception $oe) {
             // TODO: check if this works because ArchiveException is an interface not a class
             throw new ArchiveException($e->getMessage(), null, $oe->getPrevious());
@@ -939,9 +939,9 @@ class Client
         } catch (AuthenticationException $ae) {
             throw new BroadcastAuthenticationException($this->apiKey, $this->apiSecret, null, $ae->getPrevious());
         } catch (DomainException $de) {
-            throw new BroadcastDomainException($e->getMessage(), null, $de->getPrevious());
+            throw new BroadcastDomainException($e->getMessage(), 0, $de->getPrevious());
         } catch (UnexpectedValueException $uve) {
-            throw new BroadcastUnexpectedValueException($e->getMessage(), null, $uve->getPrevious());
+            throw new BroadcastUnexpectedValueException($e->getMessage(), 0, $uve->getPrevious());
         } catch (Exception $oe) {
             // TODO: check if this works because BroadcastException is an interface not a class
             throw new BroadcastException($e->getMessage(), null, $oe->getPrevious());

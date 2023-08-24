@@ -205,7 +205,7 @@ class Archive
         try {
             Validators::validateArchiveData($archiveData);
         } catch (InvalidArgumentException $e) {
-            throw new ArchiveUnexpectedValueException('The archive JSON returned after stopping was not valid', null, $e);
+            throw new ArchiveUnexpectedValueException('The archive JSON returned after stopping was not valid', 0, $e);
         }
 
         $this->data = $archiveData;
@@ -253,10 +253,10 @@ class Archive
      * @param String $streamId The stream ID.
      * @param Boolean $hasAudio Whether the archive should include the stream's audio (true, the default)
      * or not (false).
-     * @param Boolean $hasVideo Whether the archive should include the stream's video (true, the default)
+     * @param bool|Boolean $hasVideo Whether the archive should include the stream's video (true, the default)
      * or not (false).
      *
-     * @return Boolean Returns true on success.
+     * @return bool|Boolean Returns true on success.
      */
     public function addStreamToArchive(string $streamId, bool $hasAudio, bool $hasVideo): bool
     {
